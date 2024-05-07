@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 export const UrlApi = () => { return 'https://4k6aonzaxafaoebwd2x6mw6icq0syahn.lambda-url.us-east-1.on.aws/api/'}
 
-export const IsLoged = (userName : string): boolean =>{
+export const IsLoged = (): boolean =>{
     let isLogin = false;
-    let session:any  = localStorage.getItem('user');
+    let session: any  = localStorage.getItem('user');
+    
     console.log(session);
     
       if(session!==null)
       {
         let user = JSON.parse(session);
-        userName = user["email"];
         isLogin = true; 
         return isLogin;
       }
@@ -24,4 +25,23 @@ export const IsLoged = (userName : string): boolean =>{
 export const Logout = () => {
     localStorage.clear();
     // Add any additional logout logic here
+    Swal.hideLoading();
+    Swal.fire('Logout','Bye thanks for comming', 'success');
+}
+
+export const getSession = () => {
+    let session: any  = localStorage.getItem('user');
+    console.log(session);
+    let user = JSON.parse(session);
+    let email = user["email_val"];
+    return email;
+}
+
+
+export const setSession = (res: any)  => {
+    if(res.token) {
+        localStorage.setItem('user', JSON.stringify({iduser_val: res.iduser_val, token: res.token, email_val: res.email_val, role_id_val: res.role_id_val, role_name_val:res.role_name_val, due_date_token: res.due_date_token}));
+        return true;
+    }
+    return false;
 }

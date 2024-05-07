@@ -3,57 +3,77 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LoginService } from '../services/login.service';
+import {CommonModule} from '@angular/common';
+import { Login } from '../models/login.model';
+import { setSession, IsLoged } from '../utils/utils';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit {
-
-  isLogin: boolean = false; // hidden by default
-  formNewLogin = new FormGroup({
-    Name_val: new FormControl('', Validators.required),
-    Password_val: new FormControl('', Validators.required)
-  });
+export class LoginComponent implements OnInit{
+  formNewLogin: FormGroup;  
+  //isLogin: any = false | undefined // hidden by default
+  Login: Login;
+  isLogin: boolean | undefined // Two possible types: boolean or unfined
+ 
 
   constructor(private loginService: LoginService, private router: Router) { 
+    this.Login = new Login('',
+     '',
+      0,
+      '',
+      0,
+      '',
+      '',
+      '',
+      new Date());
+    this.formNewLogin = new FormGroup({
+      iduser_val: new FormControl(''),
+      name_val: new FormControl('', Validators.required),
+      password_val: new FormControl('', Validators.required),
 
+    });
   }
   
   ngOnInit(): void {
-    let session = localStorage.getItem('user');
-    console.log(session);
-    if(session!==null)
-    {
-      let datos =  JSON.parse(session);
-      this.router.navigate(['/main']);
+    if(IsLoged()){
+      this.router.navigateByUrl('/main');
+      this.isLogin=true;
     }
-    else{
-      
-    }
-   
   }
+  
 
   async onClickLogin(){
     //console.log(this.formNewLogin.value);
-    let Name_val = this.formNewLogin.value.Name_val;
-    let login = false;
+    let name_val = this.formNewLogin.value.name_val;
+    let password_val = this.formNewLogin.value.password_val;
+    
+    this.Login  = new Login(
+      name_val,
+      password_val,
+      0,
+      '',
+      0,
+      '',
+      '',
+      '',
+      new Date() // Pass a Date object instead of Date.now()
+    );
     Swal.showLoading();
-    this.loginService.login(this.formNewLogin.value).then((res:any) =>{
+    this.loginService.login(this.Login).then((res:any) =>{
       console.log(res);
       Swal.hideLoading();
       Swal.fire('Login Exitoso','Dato', 'success');
-      localStorage.setItem('user', JSON.stringify({ token: res.token, Name_val: Name_val}));
-      login = true;
-    this.router.navigateByUrl('/principal');
-    console.log('redireccionar');
+      this.isLogin=setSession(res);
+      this.router.navigateByUrl('/main');
     })
     .catch(error => {
       console.log(error);
-      Swal.fire('Error: '+error.error.mensaje,error.error.error, 'error');
+      Swal.fire('Error: '+error.error.message, 'error');
     });  
     }
 

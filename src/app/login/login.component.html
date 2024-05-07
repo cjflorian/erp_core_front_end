@@ -1,22 +1,20 @@
 <h1>Login</h1>
-<form action="" [formGroup]="formNewLogin" (ngSubmit)="onClickLogin()">
-    <input type="hidden" class="form-control" formControlName="id">
+<form [formGroup]="formNewLogin" (ngSubmit)="onClickLogin()" class="login-form">
+    <input type="hidden" class="form-control" formControlName="iduser_val"> 
     <div class="form-group">
         <label for="">UserName</label>
-        <input type="text" class="form-control" formControlName="Name_val">
-        <div class="error" *ngIf="formNewLogin.controls.Name_val.errors && formNewLogin.controls.email.touched">
+        <input type="text" class="form-control" formControlName="name_val">
+        <div class="error" *ngIf="formNewLogin.controls['name_val'].errors && formNewLogin.controls['name_val'].touched">
             El usuario es requerido
         </div>
     </div>
     <div class="form-group">
         <label for="">Password</label>
-        <input type="password" class="form-control" formControlName="Password_val">
-        <div class="error" *ngIf="formNewLogin.controls.Password_val.errors && formNewLogin.controls.password.touched">
+        <input type="password" class="form-control" formControlName="password_val">
+        <div class="error" *ngIf="formNewLogin.controls['password_val'].errors && formNewLogin.controls['password_val'].touched">
             La contraseña es requerida
         </div>
     </div>
    
-   <button type="button" class="btn btn-warning"  (click)="onClickLogin()">LOGIN</button>
-
-
+   <button type="button" class="btn btn-warning" (click)="onClickLogin()">LOGIN</button>
 </form>

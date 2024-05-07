@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { getSession, IsLoged } from '../utils/utils';
 
 @Component({
   selector: 'app-main',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 export class MainComponent implements OnInit  {
   [x: string]: any;
   
-  isLogin: boolean = false; // hidden by default
+  isLogin: boolean | undefined // Two possible types: boolean or unfined
   userName: any;
 
   constructor(private router: Router) {
@@ -20,21 +21,11 @@ export class MainComponent implements OnInit  {
   
 
   ngOnInit(): void {
-    
-    let session:any  = localStorage.getItem('user');
-    console.log(session);
-    let usuario = JSON.parse(session);
-    let email = usuario["email"];
-    
-    this.userName = email;
-      if(session!==null)
-      {
-        this.isLogin==true 
+    this.isLogin = IsLoged();
+      if(!this.isLogin) {  
+        this.router.navigateByUrl('/login');
       }
       else
-      {
-        this.isLogin==false 
-        this.router.navigate(['login']);
-      }    
+        this.userName = getSession();
     }
 }
