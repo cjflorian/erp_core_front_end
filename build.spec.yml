@@ -1,0 +1,29 @@
+version: 0.2
+
+env:
+  variables:
+    CACHE_CONTROL: "86400"
+    S3_BUCKET: "{{s3_bucket_url}}"
+    BUILD_FOLDER: "dist"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo Installing sourde NPM dependencies...
+      - npm cache clean --force
+      - npm install -g @angular/cli@latest
+      - npm install
+      - ng add @angular/material
+
+  build:
+    commands:
+      - echo Buil started
+      - ng build
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: './dist*'
+  discard-paths: yes
