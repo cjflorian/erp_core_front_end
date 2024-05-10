@@ -10,9 +10,6 @@ export class LoginService {
   private baseUrl: string = UrlApi();
   user!: Login[];
   constructor(private httpClient: HttpClient) {
-    
-    console.log(this.baseUrl);
-   
     this.user = [];
    }
    login(user: any): Promise<any[]>{
