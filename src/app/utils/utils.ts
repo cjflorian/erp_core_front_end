@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import {  HttpHeaders} from '@angular/common/http';
 
 export const UrlApi = () => { return 'https://4k6aonzaxafaoebwd2x6mw6icq0syahn.lambda-url.us-east-1.on.aws/api/'}
 
@@ -44,4 +45,31 @@ export const setSession = (res: any)  => {
         return true;
     }
     return false;
+}
+
+export const getToken = (): string => {
+  const session: any = localStorage.getItem('user');
+  const user = JSON.parse(session);
+  const token = user?.token || '';
+  return `${token}`;
+};
+
+
+
+export const createHttpHeader = (): HttpHeaders => {
+  const token = getToken();
+
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  });
+
+  return headers;
+};
+
+export const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Authorization':  `Bearer ${getToken()}`
+  })
 }

@@ -1,30 +1,35 @@
-
-<form action="" [formGroup]="formNewUser" (ngSubmit)="onSubmit()"> 
-    <div>
-        <label for="id">Id:</label>
-        <input type="number" id="id" name="id" formControlName="Id">
-    </div>
-    <div>
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" formControlName="Name">
-    </div>
-    <div>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" formControlName="Email">
-    </div>
-    <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" formControlName="Password">
-    </div>
-    <div>
-        <label for="active">Active:</label>
-        <input type="checkbox" id="active" name="active" formControlName="Active">
-    </div>
-    <div>
-        <label for="roleId">Role Id:</label>
-        <input type="number" id="roleId" name="roleId" formControlName="RoleId">
-    </div>
-    <input type="submit" value="Enviar"  class="btn btn-success" [disabled]="!formNewUser.valid" *ngIf="isShowCreate"/>
-    <button type="button" class="btn btn-warning"  (click)="onClickUpdate()" *ngIf="isShowEdit" >Modificar</button>
- 
-</form>
+<div class="container">
+    <form action="" [formGroup]="formNewUser" (ngSubmit)="onSubmit()" class="form">
+        <div class="form-group">
+            <label for="id">Id:</label>
+            <input type="number" id="id" name="id" formControlName="id" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" formControlName="name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" formControlName="email" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" formControlName="password" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="active">Active:</label>
+            <input type="checkbox" id="active" name="active" formControlName="active" class="form-check-input">
+        </div>
+        <div class="form-group">
+            <label for="active">datecreated:</label>
+            <input type="text" id="datecreated" name="datecreated" formControlName="datecreated" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="roleId">Role Id:</label>
+            <input type="number" id="roleId" name="roleId" formControlName="roleId" class="form-control">
+        </div>
+        <input type="submit" value="Enviar" class="btn btn-success" [disabled]="!formNewUser.valid" *ngIf="isShowCreate" />
+        <button type="button" class="btn btn-warning" (click)="onClickUpdate()" *ngIf="isShowEdit">Modificar</button>
+    </form>
+    
+</div>

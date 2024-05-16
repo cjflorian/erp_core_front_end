@@ -1,17 +1,19 @@
 export class User {
-    Id: number;
-    Name: string;
-    Email: string;
-    Password: string;
-    Active: boolean;
-    RoleId: number;
+    id: number;
+    name: string;
+    email: string;
+    password: string;
+    datecreated: Date;
+    active: boolean;
+    roleId: number;
 
-    constructor(id:number, name:string, email:string, password:string, active:boolean, roleId:number){
-        this.Id=id;
-        this.Name=name;
-        this.Email=email;
-        this.Password=password;
-        this.Active=active;
-        this.RoleId=roleId;
+    constructor(id:number, name:string, email:string, password:string, datecreated:Date, active:boolean, roleId:number){
+        this.id=id;
+        this.name=name;
+        this.email=email;
+        this.password=password;
+        this.datecreated=datecreated=datecreated;
+        this.active=active;
+        this.roleId=roleId;
     }
 }
