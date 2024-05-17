@@ -4,6 +4,7 @@ import { UsersService } from '../services/users.service';
 import { GenericTableComponent } from '../generic-table/generic-table.component';
 import { UserRoles } from '../models/userroles';
 import { UpdateDataService } from '../services/update-data.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-users',
@@ -13,12 +14,13 @@ import { UpdateDataService } from '../services/update-data.service';
     imports: [GenericTableComponent]
 })
 export class UsersComponent implements OnInit  {
-  users: User[] = [];
+  usersData: User[] = [];
   usersRoles: UserRoles[] = [];
   module: string = 'users';
   
+  
 
-  constructor(private usersService: UsersService, private updateDataService: UpdateDataService) { }
+  constructor(private usersService: UsersService, private updateDataService: UpdateDataService, private router: Router) { }
 
   ngOnInit(): void {
     this.getAllUsers();
@@ -28,27 +30,20 @@ export class UsersComponent implements OnInit  {
     this.usersService.getAllUsers()
       .then(usersRoles => {
         
-        this.users = usersRoles;
+        this.usersData = usersRoles;
         
         this.updateDataService.updateData(usersRoles, this.module);
         
       } )
       .catch(error => console.log(error));
   }
-
-  createUser(user: User): void {
-    this.usersService.createUser(user)
-      .then(() => {this.getAllUsers()
-        
-      })
-      .catch(error => console.log(error));
+  onClickANew(){
+    this.usersData= [];
+    this.updateDataService.editData(this.usersData[0], 'users');
+   
   }
 
-  updateUser(user: User): void {
-    this.usersService.updateUser(user)
-      .then(() => this.getAllUsers())
-      .catch(error => console.log(error));
-  }
+  
 
   deleteUser(id: number): void {
     this.usersService.deleteUser(id)

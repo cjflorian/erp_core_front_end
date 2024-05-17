@@ -1,12 +1,16 @@
 import { Component, OnInit  } from '@angular/core';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { User } from '../../models/user.model';
 import { IsLoged } from '../../utils/utils';
 import {CommonModule} from '@angular/common';
 import { UpdateDataService } from '../../services/update-data.service';
+import { Location } from '@angular/common';
+import { Roles } from '../../models/roles.model';
+import { UserRolesService } from '../../services/user-roles.service';
+import { UsersService } from '../../services/users.service';
+
 
 
 @Component({
@@ -20,10 +24,13 @@ export class FormComponent implements OnInit {
   formNewUser: FormGroup;
   User: User;
   isLogin: boolean | undefined // Two possible types: boolean or unfined
-  isShowCreate: boolean = false ; // hidden by default
-  isShowEdit: boolean = false ; // hidden by default
+  arrRoleUsers: Roles[] = [];
+  action: string = 'Create';
 
-  constructor(private router: Router, private updateService: UpdateDataService) { 
+  constructor(private router: Router, private updateService: UpdateDataService,
+    private  location: Location, 
+    private userRolesService: UserRolesService,
+    private usersService: UsersService) { 
     this.formNewUser = new FormGroup({
       id: new FormControl(''),
       name: new FormControl('', Validators.required),
@@ -38,13 +45,23 @@ export class FormComponent implements OnInit {
   }
 
   
-  ngOnInit(): void {
-    //alert('Please enter your credentials');
-    this.updateService.dataEdit$.subscribe(data => {
-      this.isShowEdit = true;
-      console.log('dataEdit', data);
-      this.formNewUser.setValue(data);
-    });
+  async ngOnInit() {
+    try {
+      await this.userRolesService.getAllRoles().then(roles => { this.arrRoleUsers=roles}).catch(err => console.log(err));
+      this.updateService.dataEdit$.subscribe(data => {
+       // console.log('dataEdit', data);
+        if(data === null){
+        }
+        else{
+          this.action = 'Edit';
+        }
+        this.formNewUser.setValue(data);
+      });
+    } catch (error) {
+      // Handle the error
+      console.error(error);
+    }
+    
     if(!IsLoged()){
       this.router.navigateByUrl('/main');
       this.isLogin=true;
@@ -60,13 +77,50 @@ export class FormComponent implements OnInit {
     let password = this.formNewUser.value.password;
     let datecreated = this.formNewUser.value.datecreated;
     let active = this.formNewUser.value.active;
-    let roleId = this.formNewUser.value.roleId;
-    this.User = new User(id!=undefined?id:0, name, email, password, datecreated, active, roleId);
+    let roleId = parseInt(this.formNewUser.value.roleId);
+    this.User = new User(id!=''?id:0, name, email, password, datecreated, active, roleId);
+    if(this.action === 'Create'){
+      this.createUser(this.User);
+    }
+    else if(this.action === 'Edit'){
+      this.updateUser(this.User);
+    }
+
   }
 
   onClickUpdate(): void {
-    this.isShowCreate = false;
-    this.isShowEdit = true;
+    this.onSubmit();
+    this.updateService.updateData(this.User, 'users');
+    this.router.navigateByUrl('/users');
+  }
+
+  onClickBack(): void {
+    this.location.back();
+  }
+
+  createUser(user: User): void {
+    this.usersService.createUser(user)
+      .then(() => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'User created successfully',
+        
+      })
+      .catch(error => console.log(error));
+  });
+}
+
+  updateUser(user: User): void {
+    this.usersService.updateUser(user)
+      .then(
+        () => {
+          Swal.fire({
+            position: 'center',
+            icon:'success',
+            title: 'User updated successfully',
+          }).catch(error => console.log(error));
+    });
   }
 
 }

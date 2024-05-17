@@ -2,7 +2,7 @@
     <form action="" [formGroup]="formNewUser" (ngSubmit)="onSubmit()" class="form">
         <div class="form-group">
             <label for="id">Id:</label>
-            <input type="number" id="id" name="id" formControlName="id" class="form-control">
+            <input type="number" id="id" name="id" formControlName="id" class="form-control" [disabled]="true">
         </div>
         <div class="form-group">
             <label for="name">Name:</label>
@@ -22,14 +22,19 @@
         </div>
         <div class="form-group">
             <label for="active">datecreated:</label>
-            <input type="text" id="datecreated" name="datecreated" formControlName="datecreated" class="form-control">
+            <input type="text" id="datecreated" name="datecreated" formControlName="datecreated"  [disabled]="true" class="form-control">
         </div>
         <div class="form-group">
             <label for="roleId">Role Id:</label>
-            <input type="number" id="roleId" name="roleId" formControlName="roleId" class="form-control">
+            <select formControlName="roleId" id="roleId" class="form-control">
+                <option *ngFor="let tipoRole of arrRoleUsers; let i = index" [value]="tipoRole.id">
+                  {{tipoRole.roleName}}
+                </option>
+              </select>
+    
         </div>
-        <input type="submit" value="Enviar" class="btn btn-success" [disabled]="!formNewUser.valid" *ngIf="isShowCreate" />
-        <button type="button" class="btn btn-warning" (click)="onClickUpdate()" *ngIf="isShowEdit">Modificar</button>
+        <button type="button" class="btn btn-default" (click)="onClickBack()">Back</button>
+        <input type="submit" value="{{ action }}" class="btn btn-success" />
     </form>
     
 </div>
