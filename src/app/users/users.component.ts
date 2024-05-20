@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
     imports: [GenericTableComponent]
 })
 export class UsersComponent implements OnInit  {
-  usersData: User[] = [];
   usersRoles: UserRoles[] = [];
   module: string = 'users';
   
@@ -29,21 +28,19 @@ export class UsersComponent implements OnInit  {
   getAllUsers(): void {
     this.usersService.getAllUsers()
       .then(usersRoles => {
-        
-        this.usersData = usersRoles;
-        
-        this.updateDataService.updateData(usersRoles, this.module);
-        
+        this.usersRoles = usersRoles;
+        this.usersRoles.forEach(userRole => {
+          userRole.module = this.module;
+        });
+        console.log(usersRoles);
+        this.updateDataService.updateData(usersRoles);
       } )
       .catch(error => console.log(error));
   }
   onClickANew(){
-    this.usersData= [];
-    this.updateDataService.editData(this.usersData[0], 'users');
-   
+    this.usersRoles= [];
+    this.updateDataService.editData(this.usersRoles[0]);
   }
-
-  
 
   deleteUser(id: number): void {
     this.usersService.deleteUser(id)

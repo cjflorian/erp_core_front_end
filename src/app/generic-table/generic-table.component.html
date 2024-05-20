@@ -9,8 +9,8 @@
       <tr *ngFor="let item of data">
         <td *ngFor="let key of keys">{{ item[key] }}</td>
         <td>
-          <a class="btn btn-warning" (click)="onClickUpdate(item)">Edit</a>
-          <a class="btn btn-danger" (click)="onClickUpdate(item)">Delete</a>
+          <a class="btn btn-warning" (click)="onClickUpdate(item)"><span class="fa fa-edit"></span>Edit</a>
+          <a class="btn btn-danger" (click)="onClickDelete(item)"><span class="fa fa-close"></span>Delete</a>
         </td>
       </tr>
     </tbody>

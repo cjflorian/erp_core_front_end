@@ -25,11 +25,11 @@ export class UsersService {
   }
 
   createUser(user: User): Promise<any> {
-    console.log('user', user);
     return this.httpClient.post<User>(`${this.baseUrl}User`, user, httpOptions).toPromise();
   }
 
   updateUser(user: User): Promise<any> {
+    console.log('user', user);
     return this.httpClient.put<User>(`${this.baseUrl}User/${user.id}`, user, httpOptions).toPromise();
   }
 

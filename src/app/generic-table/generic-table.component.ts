@@ -21,13 +21,14 @@ export class GenericTableComponent<T> implements OnInit {
     //updates form another component
     this.updateDataService.data$.subscribe(data => {
       this.data = data;
+      console.log(this.data);
     // Get the keys of the first item in the array to generate the table columns
     this.keys = this.data.length > 0 ? Object.keys(this.data[0]) : [];
     });
   }
 
   onClickUpdate(data: any) {  
-    this.updateDataService.editData(data, 'users');
+    this.updateDataService.editData(data);
     this.updateDataService.dataEdit$.subscribe(data => {
       //console.log('dataEdit', data);
     });
@@ -35,6 +36,10 @@ export class GenericTableComponent<T> implements OnInit {
 
   onClickDelete(data: any) {  
     this.updateDataService.deleteData(data);
+    this.updateDataService.dataDelete$.subscribe(data => {
+    });
   }
+
+  
 
 }

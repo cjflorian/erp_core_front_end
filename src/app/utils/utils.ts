@@ -73,3 +73,34 @@ export const httpOptions = {
     'Authorization':  `Bearer ${getToken()}`
   })
 }
+
+
+export const SwalertConfirmDelete = () => {
+  return Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+          return result.isConfirmed;
+      }else{  
+        return result.isConfirmed;
+      }
+    })
+}
+
+
+export const SwalertOkDialog = (message = '') => {
+ Swal.fire({
+      title: "Success",
+      text: message,
+      icon: "success",
+      confirmButtonText: "OK",
+      showConfirmButton: false,
+      timer: 3000
+      });
+  }

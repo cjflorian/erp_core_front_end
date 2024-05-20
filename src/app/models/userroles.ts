@@ -7,6 +7,7 @@ export class UserRoles {
     datecreated: string;
     roleId: number;
     roleName: string;
+    module: string;
 
     constructor(data: any) {
         this.id = data.id;
@@ -17,5 +18,6 @@ export class UserRoles {
         this.datecreated = data.datecreated;
         this.roleId = data.roleId;
         this.roleName = data.roleName;
+        this.module = data.module;
     }
 }

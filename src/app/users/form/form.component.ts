@@ -37,10 +37,10 @@ export class FormComponent implements OnInit {
       email: new FormControl('', Validators.required),
       password: new FormControl('', Validators.required),
       active: new FormControl('', Validators.required),
-      datecreated: new FormControl('', Validators.required),
+      datecreated: new FormControl(new Date(), Validators.required),
       roleId: new FormControl('', Validators.required),
     });
-    this.User = new User(0, '', '', '', new Date(), true, 0);
+    this.User = new User(0, '', '', '',  1, { id: 0, roleName: '' });
     
   }
 
@@ -49,8 +49,8 @@ export class FormComponent implements OnInit {
     try {
       await this.userRolesService.getAllRoles().then(roles => { this.arrRoleUsers=roles}).catch(err => console.log(err));
       this.updateService.dataEdit$.subscribe(data => {
-       // console.log('dataEdit', data);
-        if(data === null){
+        console.log('dataEdit', data);
+        if(data === null || data === undefined || data === ''){
         }
         else{
           this.action = 'Edit';
@@ -75,10 +75,10 @@ export class FormComponent implements OnInit {
     let name = this.formNewUser.value.name;
     let email = this.formNewUser.value.email;
     let password = this.formNewUser.value.password;
-    let datecreated = this.formNewUser.value.datecreated;
-    let active = this.formNewUser.value.active;
+    let active =  this.formNewUser.value.active===true ? 1 :0;
     let roleId = parseInt(this.formNewUser.value.roleId);
-    this.User = new User(id!=''?id:0, name, email, password, datecreated, active, roleId);
+    let roleName = "";
+    this.User = new User(id!=''?id:0, name, email, password,  active, {id:roleId, roleName:roleName});
     if(this.action === 'Create'){
       this.createUser(this.User);
     }
@@ -90,7 +90,7 @@ export class FormComponent implements OnInit {
 
   onClickUpdate(): void {
     this.onSubmit();
-    this.updateService.updateData(this.User, 'users');
+    this.updateService.updateData(this.User);
     this.router.navigateByUrl('/users');
   }
 
