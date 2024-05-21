@@ -1,5 +1,5 @@
 import { Component,  Input, OnInit } from '@angular/core';
-import {  ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import { UpdateDataService } from '../services/update-data.service';
 
@@ -14,14 +14,18 @@ import { UpdateDataService } from '../services/update-data.service';
 export class GenericTableComponent<T> implements OnInit {
   @Input() data: any[] = [];
   keys: string[] = [];
+  formSearch: FormGroup; 
 
-  constructor(private updateDataService: UpdateDataService) { }
+  constructor(private updateDataService: UpdateDataService) { 
+    this.formSearch = new FormGroup({
+      search: new FormControl('')
+    });
+  }
 
   ngOnInit() {
     //updates form another component
     this.updateDataService.data$.subscribe(data => {
       this.data = data;
-      console.log(this.data);
     // Get the keys of the first item in the array to generate the table columns
     this.keys = this.data.length > 0 ? Object.keys(this.data[0]) : [];
     });
@@ -39,7 +43,19 @@ export class GenericTableComponent<T> implements OnInit {
     this.updateDataService.dataDelete$.subscribe(data => {
     });
   }
-
+  searchData(search: any) {  
+    console.log(search.target.value);
+    if(search.target.value !== ''){
+      this.data = this.data.filter(item => {
+        for (const key in item) {
+          if (item[key].toString().includes(search.target.value)) {
+            return true;
+          }
+        }
+        return false;
+      });
+    }
+  }
   
 
 }

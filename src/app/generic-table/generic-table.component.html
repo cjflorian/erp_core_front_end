@@ -1,4 +1,8 @@
 <div class="container">
+  <form [formGroup]="formSearch"  class="login-form">
+    <label for="">Search</label>
+    <input type="text" class="form-control" formControlName="search" (keypress)="searchData($event)" placeholder="Search...">
+  </form>
   <table *ngIf="data.length > 0" class="table table-striped">
     <thead>
       <tr>

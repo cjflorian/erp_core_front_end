@@ -69,7 +69,7 @@ export class LoginComponent implements OnInit{
       Swal.hideLoading();
       Swal.fire('Login Exitoso','Dato', 'success');
       this.isLogin=setSession(res);
-      this.router.navigateByUrl('/main');
+      window.location.href = '/main';
     })
     .catch(error => {
       console.log(error);

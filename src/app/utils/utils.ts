@@ -8,14 +8,18 @@ export const UrlApi = () => { return 'https://4k6aonzaxafaoebwd2x6mw6icq0syahn.l
 export const IsLoged = (): boolean =>{
     let isLogin = false;
     let session: any  = localStorage.getItem('user');
-    
-    console.log(session);
-    
-      if(session!==null)
+    if(session!==null)
       {
         let user = JSON.parse(session);
-        isLogin = true; 
-        return isLogin;
+        let due_date_token = user["due_date_token"];
+        let currentDate = new Date();
+        const formattedDate = currentDate.toLocaleString("en-US");
+        if(due_date_token!==null && due_date_token.toLocaleString("en-US")<=formattedDate) {
+          isLogin = true; 
+          return isLogin;
+        }
+        else
+          return isLogin;
       }
       else
       {
@@ -28,6 +32,7 @@ export const Logout = () => {
     // Add any additional logout logic here
     Swal.hideLoading();
     Swal.fire('Logout','Bye thanks for comming', 'success');
+    window.location.href = '/login';
 }
 
 export const getSession = () => {

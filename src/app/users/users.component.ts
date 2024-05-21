@@ -5,6 +5,7 @@ import { GenericTableComponent } from '../generic-table/generic-table.component'
 import { UserRoles } from '../models/userroles';
 import { UpdateDataService } from '../services/update-data.service';
 import { Router } from '@angular/router';
+import { IsLoged } from '../utils/utils';
 
 @Component({
     selector: 'app-users',
@@ -16,7 +17,7 @@ import { Router } from '@angular/router';
 export class UsersComponent implements OnInit  {
   usersRoles: UserRoles[] = [];
   module: string = 'users';
-  
+  isLogin: boolean | undefined // Two possible types: boolean or unfined
   
 
   constructor(private usersService: UsersService, private updateDataService: UpdateDataService, private router: Router) { }
@@ -26,6 +27,12 @@ export class UsersComponent implements OnInit  {
   }
 
   getAllUsers(): void {
+   // this.updateDataService.getAll
+   this.isLogin = IsLoged();
+   if(!this.isLogin) {  
+     this.router.navigateByUrl('/login');
+   }
+   else{
     this.usersService.getAllUsers()
       .then(usersRoles => {
         this.usersRoles = usersRoles;
@@ -36,15 +43,11 @@ export class UsersComponent implements OnInit  {
         this.updateDataService.updateData(usersRoles);
       } )
       .catch(error => console.log(error));
-  }
+   }
+ }
+    
   onClickANew(){
     this.usersRoles= [];
     this.updateDataService.editData(this.usersRoles[0]);
-  }
-
-  deleteUser(id: number): void {
-    this.usersService.deleteUser(id)
-      .then(() => this.getAllUsers())
-      .catch(error => console.log(error));
   }
 }

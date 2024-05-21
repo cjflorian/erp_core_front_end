@@ -10,10 +10,13 @@ import { FormComponent } from './users/form/form.component';
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: '/main'},
-    {path: 'main', component:MainComponent},
+    {path: 'main', component:MainComponent,
+        children: [
+            {path:'menu', component:MenuComponent}
+        ]
+    },
     {path: 'login', component:LoginComponent},
     {path: 'users', component:UsersComponent},
-    {path:'menu', component:MenuComponent},
     {path: 'logout', component:LogoutComponent},
     {path: 'users/form', component:FormComponent},
     {path: 'users/form/:id', component:FormComponent}

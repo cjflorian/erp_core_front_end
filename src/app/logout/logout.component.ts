@@ -19,7 +19,6 @@ export class LogoutComponent implements OnInit {
       // Code to be executed after a delay of 1000 milliseconds (1 second)
       Logout();
     }, 1000);
-    this.router.navigateByUrl('/login');
   }
 
 }
