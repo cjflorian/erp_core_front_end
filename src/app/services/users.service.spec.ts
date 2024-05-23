@@ -32,16 +32,20 @@ describe('UsersService', () => {
         id: 1, name: 'John Doe',
         email: '',
         password: '',
-        active: false,
-        roleId: 0
+        active: 1,
+        role: {
+        id: 3,
+        roleName: ""}
       },
       {
         id: 2, 
         name: 'Jane Smith',
         email: '',
         password: '',
-        active: false,
-        roleId: 0
+        active: 1,
+        role: {
+        id: 3,
+        roleName: ""}
       }
     ];
 
@@ -60,8 +64,10 @@ describe('UsersService', () => {
       name: 'John Doe',
       email: '',
       password: '',
-      active: false,
-      roleId: 0
+      active: 1,
+      role: {
+      id: 3,
+      roleName: ""}
     };
     const userId = 1;
 
@@ -80,8 +86,10 @@ describe('UsersService', () => {
       name: 'John Doe',
       email: '',
       password: '',
-      active: false,
-      roleId: 0
+      active: 1,
+      role: {
+      id: 3,
+      roleName: ""}
     };
 
     service.createUser(dummyUser).then((user: User) => {
@@ -100,8 +108,10 @@ describe('UsersService', () => {
       name: 'John Doe',
       email: '',
       password: '',
-      active: false,
-      roleId: 0
+      active: 1,
+        role: {
+        id: 3,
+        roleName: ""}
     };
 
     service.updateUser(dummyUser).then((user: User) => {

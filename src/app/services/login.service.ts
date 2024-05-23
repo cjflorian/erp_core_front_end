@@ -7,7 +7,7 @@ import { UrlApi} from '../utils/utils';
   providedIn: 'root'
 })
 export class LoginService {
-  private baseUrl: string = UrlApi();
+  public baseUrl: string = UrlApi();
   user!: Login[];
   constructor(private httpClient: HttpClient) {
     this.user = [];
